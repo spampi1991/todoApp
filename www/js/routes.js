@@ -7,15 +7,14 @@
         .config(function($stateProvider, $urlRouterProvider) {
 
             $stateProvider
-          
-              .state('todo', {
-                url: '/todo',
+              .state('tasks', {
+                url: '/tasks',
                 abstract: true,
                 templateUrl: 'js/ui/templates/menu.html',
                 controller: 'MenuController as menuCtrl'
             })
           
-            .state('todo.create', {
+            .state('tasks.create', {
               url: '/create',
               views: {
                 'menuContent': {
@@ -23,9 +22,20 @@
                   controller: 'TaskCreateController as taskCreateCtrl'
                 }
               }
+            })
+
+            .state('tasks.detail', {
+              url: '/:id',
+              views: {
+                'menuContent': {
+                  templateUrl: 'js/task/templates/taskDetail.html',
+                  controller: 'TaskDetailController as taskDetailCtrl'
+                }
+              }
             });
 
-            $urlRouterProvider.otherwise('/todo/create');
+            $urlRouterProvider.otherwise('/tasks/create');
+
           });
     }
 )();

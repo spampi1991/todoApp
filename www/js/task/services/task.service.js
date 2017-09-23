@@ -5,9 +5,9 @@
         .module('todoApp.task')
         .factory('TaskService', TaskService);
 
-    TaskService.$inject = ['$cordovaSQLite', '$log', '$q'];
+    TaskService.$inject = ['$log', '$q', 'DbUtil', 'uuid4'];
 
-    function TaskService($cordovaSQLite, $log, $q) {
+    function TaskService($log, $q, DbUtil, uuid4) {
         var service = {
             save : save
         };
@@ -15,17 +15,32 @@
         return service;
 
         function save(task) { 
-            var db = $cordovaSQLite.openDB({ name: "todoApp.db", location: 'default' });
-            var query = "INSERT INTO tasks (title, description, due_date) VALUES (?, ?, ?)";
+            var db = DbUtil.openDb();
+            var query = "INSERT INTO tasks (id, title, description, creation_date) VALUES (?, ?, ?, ?)";
+            var id = uuid4.generate();
+            var binding = [id, task.title, task.description, task.creationDate];
 
-            $cordovaSQLite.execute(db, query, [task.title, task.description, task.dueDate]).then(function(res) {
-              $log.info(res);
-              return res.insertId;
-              
-            }, function (err) {
-                $log.error(err)
-                return $q.reject();
-            });
+            return DbUtil.execute(db, query, binding)
+                .then(function() {
+                    return id;
+                })
+                .catch(function(err) {
+                    $q.reject(err);
+                });
+        }
+
+        function find(id) {
+            var db = DbUtil.openDb();
+            var query = "SELECT id, title, description FROM tasks WHERE id = ?";
+            var binding = [id];
+
+            return DbUtil.execute(db, query, binding)
+                .then(function() {
+                    return id;
+                })
+                .catch(function(err) {
+                    $q.reject(err);
+                });
         }
     }
 })();

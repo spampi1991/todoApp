@@ -6,32 +6,28 @@
         .module('todoApp.task')
         .controller('TaskCreateController', TaskCreateController);
 
-        TaskCreateController.$inject = ['TaskService', '$ionicPopup'];
+    TaskCreateController.$inject = ['TaskService', '$ionicPopup', '$log', '$state'];
 
-    function TaskCreateController(TaskService, $ionicPopup) {
+    function TaskCreateController(TaskService, $ionicPopup, $log, $state) {
         var vm = this;
-        vm.task = { title: '', description: '', dueDate: new Date() }
+        vm.task = { title: '', description: '', creationDate: new Date() }
         vm.save = save;
 
         activate();
-
-        ////////////////
 
         function activate() { }
 
         function save() {
             TaskService.save(vm.task)
-                .then(function(res){
-                    $ionicPopup.alert({
-                        title: 'Yeah, you\'ve done it',
-                        template: 'Task successfully submitted!'
-                      }).show();
+                .then(function(taskId) {
+                    $log.info(taskId);
+                    $state.go('tasks.detail', {id: taskId});
                 })
-                .catch(function(err){
+                .catch(function(err) {
                     $ionicPopup.alert({
                         title: 'Something went wrong',
-                        template: 'Fuck :('
-                      }).show();
+                        template: err.message
+                      });
                 });
         }
     }
