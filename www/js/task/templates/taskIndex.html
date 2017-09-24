@@ -1,0 +1,15 @@
+<ion-view view-title="Elenco attività">
+    <ion-content>
+        <div class="list">
+            <a class="item" ng-repeat="task in taskIndexCtrl.tasks">
+                <div ng-click="taskIndexCtrl.showTask(task.id)">
+                    <h2>{{task.title}}</h2>
+                    <p>{{task.description}}</p>
+                </div>
+            </a>
+        </div>
+    </ion-content>
+    <div class="bar bar-footer bar-balanced" ng-click="taskIndexCtrl.showTaskCreateForm()">
+        <div class="title">Crea un attività</div>
+    </div>
+  </ion-view>

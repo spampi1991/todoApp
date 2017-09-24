@@ -20,8 +20,8 @@
         function save() {
             TaskService.save(vm.task)
                 .then(function(taskId) {
-                    $log.info(taskId);
-                    $state.go('tasks.detail', {id: taskId});
+                    $log.info("Created new task with id " + taskId);
+                    $state.go('tasks.index', {}, {reload: true});
                 })
                 .catch(function(err) {
                     $ionicPopup.alert({

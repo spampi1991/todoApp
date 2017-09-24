@@ -9,7 +9,11 @@
 
     function TaskService($log, $q, DbUtil, uuid4) {
         var service = {
-            save : save
+            save : save,
+            findOne: findOne,
+            findAll: findAll,
+            remove: remove,
+            update: update
         };
         
         return service;
@@ -29,18 +33,51 @@
                 });
         }
 
-        function find(id) {
+        function findOne(id) {
             var db = DbUtil.openDb();
             var query = "SELECT id, title, description FROM tasks WHERE id = ?";
             var binding = [id];
 
             return DbUtil.execute(db, query, binding)
-                .then(function() {
-                    return id;
+                .then(function(res) {
+                    return res.rows[0];
                 })
                 .catch(function(err) {
                     $q.reject(err);
                 });
+        }
+
+        function findAll() {
+            var db = DbUtil.openDb();
+            var query = "SELECT id, title, description FROM tasks";
+            var binding = [];
+
+            return DbUtil.execute(db, query, binding)
+                .then(function(res) {
+                    $log.info(res);
+                    return res.rows;
+                })
+                .catch(function(err) {
+                    $q.reject(err);
+                });
+        }
+
+        function remove(id) {
+            var db = DbUtil.openDb();
+            var query = "DELETE FROM tasks WHERE id = ?";
+            var binding = [id];
+
+            return DbUtil.execute(db, query, binding)
+                .then(function(res) {
+                    $log.info(res);
+                })
+                .catch(function(err) {
+                    $q.reject(err);
+                });
+        }
+
+        function update(task) {
+
         }
     }
 })();

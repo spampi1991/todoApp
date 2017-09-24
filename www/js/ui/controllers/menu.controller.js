@@ -6,16 +6,14 @@
         .module('todoApp')
         .controller('MenuController', MenuController);
 
-    MenuController.$inject = [];
+    MenuController.$inject = ['$rootScope', '$log'];
 
-    function MenuController() {
+    function MenuController($rootScope, $log) {
         var vm = this;
-        
 
         activate();
 
-        ////////////////
-
-        function activate() { }
+        function activate() {
+         }
     }
 })();

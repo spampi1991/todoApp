@@ -19,11 +19,10 @@
 
         function openDb() {
             if ($window.sqlitePlugin) {
-                $log.info("Cordova sqlitePlugin available!");
-                return $window.sqlitePlugin.openDatabase({ name: "todoApp.db", location: 'default' });
+                //return $window.sqlitePlugin.openDatabase({ name: "todoApp.db", location: 'default' });
+                return $window.openDatabase('todoApp.db', '1.0', 'database', -1);
             }
             else {
-                $log.info("Cordova sqlitePlugin not available, fallback to Web SQL");
                 return $window.openDatabase('todoApp.db', '1.0', 'database', -1);
             }
         }

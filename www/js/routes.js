@@ -24,18 +24,27 @@
               }
             })
 
-            .state('tasks.detail', {
+            .state('tasks.index', {
+              url: '/index',
+              views: {
+                'menuContent': {
+                  templateUrl: 'js/task/templates/taskIndex.html',
+                  controller: 'TaskIndexController as taskIndexCtrl'
+                }
+              }
+            })
+
+            .state('tasks.show', {
               url: '/:id',
               views: {
                 'menuContent': {
-                  templateUrl: 'js/task/templates/taskDetail.html',
-                  controller: 'TaskDetailController as taskDetailCtrl'
+                  templateUrl: 'js/task/templates/taskShow.html',
+                  controller: 'TaskShowController as taskShowCtrl'
                 }
               }
             });
 
-            $urlRouterProvider.otherwise('/tasks/create');
-
+            $urlRouterProvider.otherwise('/tasks/index');
           });
     }
 )();
